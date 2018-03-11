@@ -1,0 +1,5 @@
+outputPath = "./output/"
+preprocessPath = outputPath + "preprocess/"
+meansPath = preprocessPath + "means.npy"
+stddevPath = preprocessPath + "stddev.npy"
+vectorPath = preprocessPath + "vector.npy"
