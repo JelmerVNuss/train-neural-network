@@ -1,0 +1,6 @@
+# Git files and folders
+.git/
+.gitignore
+
+# Created output folder if exists
+output/
