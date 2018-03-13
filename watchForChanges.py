@@ -1,10 +1,8 @@
 import time
 import os
-import numpy as np
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
-from paths import preprocessPath, vectorPath
-import pandas as pd
+from runTrainingCycle import runTrainingCycle
 
 
 class DataHandler(PatternMatchingEventHandler):
@@ -19,37 +17,13 @@ class DataHandler(PatternMatchingEventHandler):
         event.src_path
             path/to/observed/file
         """
-        data = pd.read_csv(event.src_path, sep=',', decimal='.')
-        vectorizeData(data)
+        runTrainingCycle(event.src_path)
 
     def on_modified(self, event):
         self.process(event)
 
     def on_created(self, event):
         self.process(event)
-
-
-def vectorizeData(data):
-    vector = np.array(data)
-    # Ignore date while calculating means/stddevs
-    vector = np.transpose(vector)
-    dates = vector[0]
-    vector = vector[1:]
-
-    vector = vector.transpose()
-    means = np.mean(vector, axis=0)
-    vector = np.subtract(vector, means)
-    stddev = np.std(vector, dtype=float, axis=0)
-    vector = np.divide(vector, stddev)
-    vector = vector.transpose()
-
-    vector = np.vstack([dates, vector])
-    vector = np.transpose(vector)
-
-    if not os.path.exists(preprocessPath):
-        os.makedirs(preprocessPath)
-
-    np.save(vectorPath, vector)
 
 
 if __name__ == '__main__':
