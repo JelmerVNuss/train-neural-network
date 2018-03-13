@@ -2,9 +2,11 @@ import numpy as np
 import os
 import pandas as pd
 import ntpath
+from datetime import datetime
 
-from paths import preprocessPath
+from paths import outputPath, preprocessPath
 from trainingDataLoader import loadTrainingData, matchPredictionOnInput
+from trainModel import train
 
 
 def runTrainingCycle(filepath):
@@ -15,6 +17,22 @@ def runTrainingCycle(filepath):
     vectorPath = preprocessPath + filename + "_vector.npy"
     input, output = loadTrainingData(vectorPath)
     datasetX, datasetY = matchPredictionOnInput(input, output, lookback=50, daysAhead=10)
+
+    encoderPath = "./output/models/encoder.h5"
+
+    date = datetime.now()
+    daysAhead = 10
+    filename = "{}_{}_{:%Y-%m-%d_%H:%M:%S}.csv".format(daysAhead, filename, date)
+    modelPath = "./output/models/model-" + filename + ".h5"
+
+    predictionPath = outputPath + "predictions/predictions-" + filename + ".csv"
+
+    if not os.path.exists(outputPath + "models/"):
+        os.makedirs(outputPath + "models/")
+    if not os.path.exists(outputPath + "predictions/"):
+        os.makedirs(outputPath + "predictions/")
+    train(filename, datasetX, datasetY, encoderPath, modelPath, predictionPath)
+
 
 def vectorizeData(filename, data):
     vector = np.array(data)
@@ -36,7 +54,11 @@ def vectorizeData(filename, data):
     if not os.path.exists(preprocessPath):
         os.makedirs(preprocessPath)
 
+    meansPath = preprocessPath + filename + "_means.npy"
+    stddevPath = preprocessPath + filename + "_stddev.npy"
     vectorPath = preprocessPath + filename + "_vector.npy"
+    np.save(meansPath, means)
+    np.save(stddevPath, stddev)
     np.save(vectorPath, vector)
 
 
