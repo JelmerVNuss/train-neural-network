@@ -10,7 +10,7 @@ from trainModel import train
 
 
 def runTrainingCycle(filepath):
-    data = pd.read_csv(filepath, sep=',', decimal='.')
+    data = pd.read_csv(filepath, sep=';', decimal='.')
     filename = ntpath.basename(filepath).split("_")[:3]
     filename = "_".join(filename)
     vectorizeData(filename, data)
