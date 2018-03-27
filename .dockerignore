@@ -2,5 +2,8 @@
 .git/
 .gitignore
 
+# Virtual environment
+venv/
+
 # Created output folder if exists
 output/
