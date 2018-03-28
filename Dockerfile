@@ -7,4 +7,4 @@ ADD requirements.txt /tmp/requirements.txt
 RUN pip3 install -r /tmp/requirements.txt
 ADD . /src
 WORKDIR /src
-CMD ["python", "watchForChanges.py"]
+CMD ["python3", "watchForChanges.py"]
