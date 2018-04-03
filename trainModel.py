@@ -21,17 +21,12 @@ USEAUTOENCODER = False
 
 def train(filename, datasetX, datasetY, encoderPath, modelPath, predictionPath):
     # Split into training and testing set
-    index = len(datasetX) - 90
-    trainingX = datasetX[:index]
-    trainingY = datasetY[:index]
-    testingX = datasetX[index:]
-    testingY = datasetY[index:]
+    index = int(len(datasetX) * TRAINING_DATA_PERCENTAGE)
+    trainingX = np.array(datasetX[:index])
+    trainingY = np.array(datasetY[:index])
+    testingX = np.array(datasetX[index:])
+    testingY = np.array(datasetY[index:])
 
-    # trainingX, testingX, trainingY, testingY = train_test_split(datasetX,
-    #                                                             datasetY,
-    #                                                             train_size=TRAINING_DATA_PERCENTAGE,
-    #                                                             test_size=1 - TRAINING_DATA_PERCENTAGE,
-    #                                                              random_state=0)
     # Remove timestamps from training
     trainingY = trainingY.transpose()[1].transpose()
     # Extract timestamps from testing
