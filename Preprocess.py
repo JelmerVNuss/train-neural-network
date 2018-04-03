@@ -1,47 +1,51 @@
 import os, calendar
 import numpy as np
 import pandas as pd
+from datetime import datetime
 
 from paths import preprocessPath
+
+
+# Converta datetime to a year-cyclic date parameter
+def dayToCycle(date):
+    startOfYear = datetime(date.year, 1, 1)
+    startOfNextYear = datetime(date.year + 1, 1, 1)
+    difference = startOfNextYear - startOfYear
+    daysInYear = difference.days
+
+    daysSinceStart = (date - startOfYear).days
+    cycleIndex = daysSinceStart / daysInYear * np.pi * 2
+
+    x = np.sin(cycleIndex)
+    y = np.cos(cycleIndex)
+    # Prevent 0 values
+    if x == 0:
+        x = .000001
+    if y == 0:
+        y = .000001
+    return x, y
 
 
 def dateTimeToVector(sheet):
     sheet = sheet.reset_index(drop=True)
     #sheet = sheet.fillna(0)
-    columnnames = sheet.columns.values
-    time = sheet[0]
-    year = time[0].year
+    columnnames = list(sheet.columns.values)
+    dateSlice = sheet['Date']
 
-    daysInYear = 365
-    if calendar.isleap(year):
-        daysInYear = 366
-    # ## Remove last rows (total amounts)
-    index = sheet.index[daysInYear:]
-    sheet = sheet.drop(index)
+    dates = [datetime.strptime(date, "%m/%d/%y") for date in dateSlice]
 
-    # ## Description
-    cleanedSheet = sheet[requiredNames]
-    cleanedSheet = cleanedSheet.apply(pd.to_numeric)
+    cycles = [dayToCycle(date) for date in dates]
+    dateX = [cycle[0] for cycle in cycles]
+    dateY = [cycle[1] for cycle in cycles]
+
+    columnnames.remove('Date')
+    cleanedSheet = sheet[columnnames]
+    #cleanedSheet = cleanedSheet.apply(pd.to_numeric)
 
     print(cleanedSheet.describe())
 
-    sheetDates = sheet['DATE']
-    # Create cyclic date parameter
-    dateX = []
-    dateY = []
-    for i in range(daysInYear):
-        x = np.sin(i / daysInYear * np.pi * 2)
-        y = np.cos(i / daysInYear * np.pi * 2)
-        # Prevent 0 values
-        if x == 0:
-            x = .000001
-        if y == 0:
-            y = .000001
-        dateX.append(x)
-        dateY.append(y)
-
+    sheetDates = sheet['Date']
     dateCycle = pd.DataFrame({'dateX': dateX, 'dateY': dateY})
-
     cleanedSheet = pd.concat([sheetDates, dateCycle, cleanedSheet], axis=1)
 
     return cleanedSheet
