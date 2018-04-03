@@ -10,11 +10,12 @@ from Preprocess import vectorizeData
 def runTrainingCycle(inputFilePath):
     vectorPath = vectorizeData(inputFilePath)
     input, output = loadTrainingData(vectorPath)
-    datasetX, datasetY = matchPredictionOnInput(input, output, lookback=50, daysAhead=10)
+    datasetX, datasetY = matchPredictionOnInput(input, output, lookback=64, daysAhead=10)
 
     encoderPath = "./output/models/encoder.h5"
 
     date = datetime.now()
+    filename = os.path.basename(inputFilePath)
     daysAhead = 10
     filename = "{}_{}_{:%Y-%m-%d_%H:%M:%S}.csv".format(daysAhead, filename, date)
     modelPath = "./output/models/model-" + filename + ".h5"
