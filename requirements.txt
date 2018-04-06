@@ -21,5 +21,4 @@ sklearn==0.0
 tensorboard==1.6.0
 tensorflow-gpu==1.6.0
 termcolor==1.1.0
-watchdog==0.8.3
 Werkzeug==0.14.1
