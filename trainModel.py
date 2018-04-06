@@ -1,13 +1,11 @@
 import os
 import csv
-from datetime import datetime
 
 import numpy as np
 from keras.callbacks import TensorBoard
 from keras.models import load_model
-from sklearn.model_selection import train_test_split
 
-from paths import outputPath, preprocessPath
+from paths import preprocessPath
 
 from AutoEncoder import AutoEncoder
 from models import *
