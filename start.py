@@ -2,12 +2,13 @@ import os
 from runTrainingCycle import runTrainingCycle
 
 
-def getFilePath():
+def getFilePaths():
     files = os.listdir("data/")
-    file = files[0]
-    print("File found: " + file)
-    return "data/" + file
+    print("File(s) found: " + str(files))
+    files = ["data/" + file for file in files]
+    return files
 
 
-filepath = getFilePath()
-runTrainingCycle(filepath)
+filepaths = getFilePaths()
+for filepath in filepaths:
+    runTrainingCycle(filepath)
