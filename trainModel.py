@@ -59,7 +59,7 @@ def train(filename, datasetX, datasetY, encoderPath, modelPath, predictionPath):
                   epochs=150,
                   batch_size=256,
                   validation_data=[testingX, testingY],
-                  callbacks=[TensorBoard(log_dir='/tmp/nini')])
+                  callbacks=[TensorBoard(log_dir='/tmp/')])
         model.save(modelPath)
 
     # Evaluate the model
