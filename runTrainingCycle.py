@@ -4,7 +4,10 @@ from datetime import datetime
 from paths import outputPath
 from trainingDataLoader import loadTrainingData, matchPredictionOnInput
 from trainModel import train
-from Preprocess import vectorizeData
+from preprocess_training_data import vectorizeData
+
+
+DAYS_AHEAD = 10
 
 
 def runTrainingCycle(inputFilePath):
@@ -16,8 +19,7 @@ def runTrainingCycle(inputFilePath):
 
     date = datetime.now()
     filename = os.path.basename(inputFilePath)
-    daysAhead = 10
-    filename = "{}_{}_{:%Y-%m-%d_%H:%M:%S}.csv".format(daysAhead, filename, date)
+    filename = "{}_{}_{:%Y-%m-%d_%H%M%S}.csv".format(DAYS_AHEAD, filename, date)
     modelPath = "./output/models/model-" + filename + ".h5"
 
     predictionPath = outputPath + "predictions/predictions-" + filename + ".csv"
@@ -31,4 +33,4 @@ def runTrainingCycle(inputFilePath):
 
 # TODO: just for debugging, remove in production
 if __name__ == "__main__":
-    runTrainingCycle("./data/ABCPlants_production_10_2018-03-05_13:15:36.csv")
+    runTrainingCycle("./data/autonomous-greenhouse_production_47_2020-06-05_165451.csv")

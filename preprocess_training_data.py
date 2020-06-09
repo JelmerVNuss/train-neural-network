@@ -6,7 +6,7 @@ from datetime import datetime
 from paths import preprocessPath
 
 
-# Converta datetime to a year-cyclic date parameter
+# Convert a datetime to a year-cyclic date parameter
 def dayToCycle(date):
     startOfYear = datetime(date.year, 1, 1)
     startOfNextYear = datetime(date.year + 1, 1, 1)
@@ -30,21 +30,21 @@ def dateTimeToVector(sheet):
     sheet = sheet.reset_index(drop=True)
     #sheet = sheet.fillna(0)
     columnnames = list(sheet.columns.values)
-    dateSlice = sheet['Date']
+    dateSlice = sheet['date']
 
-    dates = [datetime.strptime(date, "%m/%d/%y") for date in dateSlice]
+    dates = [datetime.strptime(date, "%y/%m/%d") for date in dateSlice]
 
     cycles = [dayToCycle(date) for date in dates]
     dateX = [cycle[0] for cycle in cycles]
     dateY = [cycle[1] for cycle in cycles]
 
-    columnnames.remove('Date')
+    columnnames.remove('date')
     cleanedSheet = sheet[columnnames]
     #cleanedSheet = cleanedSheet.apply(pd.to_numeric)
 
     print(cleanedSheet.describe())
 
-    sheetDates = sheet['Date']
+    sheetDates = sheet['date']
     dateCycle = pd.DataFrame({'dateX': dateX, 'dateY': dateY})
     cleanedSheet = pd.concat([sheetDates, dateCycle, cleanedSheet], axis=1)
 

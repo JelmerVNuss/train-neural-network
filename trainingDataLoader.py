@@ -4,10 +4,10 @@ import numpy as np
 def loadTrainingData(vectorPath):
     allData = np.load(vectorPath)
 
-    # Remove dates from input
+    # Remove dates from input.
     input = allData.transpose()[1:].transpose()
 
-    # Extract training target date and value
+    # Extract training target date and value.
     last = len(allData[0]) - 1
     output = np.array([[vector[0], vector[last]] for vector in allData])
     return input, output

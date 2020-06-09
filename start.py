@@ -9,6 +9,7 @@ def getFilePaths():
     return files
 
 
-filepaths = getFilePaths()
-for filepath in filepaths:
-    runTrainingCycle(filepath)
+if __name__ == "__main__":
+    filepaths = getFilePaths()
+    for filepath in filepaths:
+        runTrainingCycle(filepath)

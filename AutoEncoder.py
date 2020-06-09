@@ -6,7 +6,7 @@ class AutoEncoder():
     def __init__(self, inputShape):
         kernelSize = (3, inputShape[1])
 
-        # Create autoencoder model
+        # Create autoencoder model.
         input = Input(inputShape)
 
         shapeWithOneAdded = inputShape + tuple([1])
@@ -21,7 +21,7 @@ class AutoEncoder():
         deconv1 = self.deconvBlock(16, deconv0, kernelSize, unpool=True)
         deconv2 = self.deconvBlock(1, deconv1, kernelSize)
 
-        # Remove "color" dimension required for Conv2D
+        # Remove "color" dimension required for Conv2D.
         output = Reshape(inputShape)(deconv2)
 
         model = Model(input, output)
