@@ -1,7 +1,7 @@
 absl-py==0.1.11
 argh==0.26.2
 astor==0.6.2
-bleach==1.5.0
+bleach==3.3.0
 gast==0.2.0
 grpcio==1.10.0
 html5lib==0.9999999
